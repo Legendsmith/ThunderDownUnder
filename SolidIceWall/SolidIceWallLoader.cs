@@ -3,10 +3,11 @@ using UnityEngine;
 using RoR2;
 
 
-namespace SolidIceWall
+namespace ThunderDownUnder.SolidIceWall
 {
-    public class SolidIceWallLoader
-
+    [BepInPlugin("com.ThunderDownUnder.SolidIcewall", "SolidIceWall", "1.1.0")]
+    public class SolidIceWallLoader : BaseUnityPlugin
+    
     {
         public void Awake()
         {
