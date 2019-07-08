@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThunderDownUnder", "Thunder
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidIceWall", "SolidIceWall\SolidIceWall.csproj", "{F32C589C-814B-4E29-B3F7-9E5250B023AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterCommando", "BetterCommando\BetterCommando.csproj", "{884D36E6-4DAC-487F-B207-1F129819AD8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImprovedCommando", "BetterCommando\ImprovedCommando.csproj", "{884D36E6-4DAC-487F-B207-1F129819AD8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

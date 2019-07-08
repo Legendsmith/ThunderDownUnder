@@ -7,12 +7,12 @@ using UnityEngine;
 using RoR2.Projectile;
 namespace ThunderDownUnder.BetterCommando
 {
-    [BepInPlugin("com.ThunderDownUnder.BetterCommando", "BetterCommando", "1.0.0")]
+    [BepInPlugin("com.ThunderDownUnder.ImprovedCommando", "ImprovedCommando", "1.1.0")]
     public class BetterCommandoLoader :BaseUnityPlugin
     {
         public void Awake()
         {
-            Chat.AddMessage("Loaded BetterCommando!");
+            Chat.AddMessage("Loaded ImprovedCommando!");
             SurvivorAPI.SurvivorCatalogReady += delegate (object s, EventArgs e)
             {
                 //get commando body
@@ -36,14 +36,18 @@ namespace ThunderDownUnder.BetterCommando
                 //load secondary
                 GenericSkill secondary = gameObject.GetComponent<SkillLocator>().secondary;
                 secondary.baseMaxStock = 2;
-                secondary.mustKeyPress = true;
                 GenericSkill special = gameObject.GetComponent<SkillLocator>().special;
-                special.skillDescriptionToken = "Fire rapidly, stunning enemies for 6x100% damage and reload your Phase Rounds.";
+                special.skillDescriptionToken = "Fire rapidly, stunning enemies for 6x100% damage and reload two Phase Round charges.";
                 On.EntityStates.Commando.CommandoWeapon.FireBarrage.OnExit += (orig, self) =>
                 {
                     orig(self);
                     GenericSkill secondaryskill = self.outer.commonComponents.characterBody.GetComponent<SkillLocator>().secondary;
-                    secondaryskill.Reset();
+                    secondaryskill.AddOneStock();
+                    secondaryskill.AddOneStock();
+                    if (secondaryskill.stock > secondary.maxStock)
+                    {
+                        secondaryskill.Reset();
+                    }
                 };
 
             };
