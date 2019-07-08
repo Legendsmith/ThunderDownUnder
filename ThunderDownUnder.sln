@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThunderDownUnder", "ThunderDownUnder\ThunderDownUnder.csproj", "{2F427C36-F7B8-4582-8753-D598D7EAB7CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidIceWall", "SolidIceWall\SolidIceWall.csproj", "{F32C589C-814B-4E29-B3F7-9E5250B023AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2F427C36-F7B8-4582-8753-D598D7EAB7CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F427C36-F7B8-4582-8753-D598D7EAB7CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F427C36-F7B8-4582-8753-D598D7EAB7CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F427C36-F7B8-4582-8753-D598D7EAB7CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F32C589C-814B-4E29-B3F7-9E5250B023AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F32C589C-814B-4E29-B3F7-9E5250B023AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F32C589C-814B-4E29-B3F7-9E5250B023AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F32C589C-814B-4E29-B3F7-9E5250B023AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {17621B8F-7D20-4A3C-AC89-51C8EF800D70}
+	EndGlobalSection
+EndGlobal
