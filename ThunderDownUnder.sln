@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThunderDownUnder", "ThunderDownUnder\ThunderDownUnder.csproj", "{2F427C36-F7B8-4582-8753-D598D7EAB7CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThunderDownUnder", "ThunderDownUnder\ThunderDownUnder.csproj", "{2F427C36-F7B8-4582-8753-D598D7EAB7CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidIceWall", "SolidIceWall\SolidIceWall.csproj", "{F32C589C-814B-4E29-B3F7-9E5250B023AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolidIceWall", "SolidIceWall\SolidIceWall.csproj", "{F32C589C-814B-4E29-B3F7-9E5250B023AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImprovedCommando", "BetterCommando\ImprovedCommando.csproj", "{884D36E6-4DAC-487F-B207-1F129819AD8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImprovedCommando", "BetterCommando\ImprovedCommando.csproj", "{884D36E6-4DAC-487F-B207-1F129819AD8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImprovedArtificer", "ImprovedArtificer\ImprovedArtificer.csproj", "{4EB6B51C-788C-4AC3-AC87-A97A6AAF069C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{884D36E6-4DAC-487F-B207-1F129819AD8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{884D36E6-4DAC-487F-B207-1F129819AD8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{884D36E6-4DAC-487F-B207-1F129819AD8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EB6B51C-788C-4AC3-AC87-A97A6AAF069C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EB6B51C-788C-4AC3-AC87-A97A6AAF069C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EB6B51C-788C-4AC3-AC87-A97A6AAF069C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EB6B51C-788C-4AC3-AC87-A97A6AAF069C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,7 +7,7 @@ using UnityEngine;
 using RoR2.Projectile;
 namespace ThunderDownUnder.BetterCommando
 {
-    [BepInPlugin("com.ThunderDownUnder.ImprovedCommando", "ImprovedCommando", "1.1.0")]
+    [BepInPlugin("com.ThunderDownUnder.ImprovedCommando", "ImprovedCommando", "1.0.1")]
     public class BetterCommandoLoader :BaseUnityPlugin
     {
         public void Awake()
@@ -28,7 +28,7 @@ namespace ThunderDownUnder.BetterCommando
                 utility.baseMaxStock = 2;
                 //edit utility descriptions
                 utility.skillNameToken = "Reposition";
-                utility.skillDescriptionToken = "<i>Rolls</i> a short distance, while using a smoke grenade to turn invisible for 2 seconds. Holds 2 charges.";
+                utility.skillDescriptionToken = "<i>Rolls</i> a short distance, with a short speed boost after. Holds 2 charges.";
                 //load the FMJ
                 GameObject fmjprefab = Resources.Load<GameObject>("prefabs/projectiles/fmj");
                 ProjectileSimple fmjprojectilesimple = fmjprefab.GetComponentInChildren<ProjectileSimple>();
@@ -37,17 +37,12 @@ namespace ThunderDownUnder.BetterCommando
                 GenericSkill secondary = gameObject.GetComponent<SkillLocator>().secondary;
                 secondary.baseMaxStock = 2;
                 GenericSkill special = gameObject.GetComponent<SkillLocator>().special;
-                special.skillDescriptionToken = "Fire rapidly, stunning enemies for 6x100% damage and reload two Phase Round charges.";
+                special.skillDescriptionToken = "Fire rapidly, stunning enemies for 6x100% damage and reload all Phase Rounds.";
                 On.EntityStates.Commando.CommandoWeapon.FireBarrage.OnExit += (orig, self) =>
                 {
                     orig(self);
                     GenericSkill secondaryskill = self.outer.commonComponents.characterBody.GetComponent<SkillLocator>().secondary;
-                    secondaryskill.AddOneStock();
-                    secondaryskill.AddOneStock();
-                    if (secondaryskill.stock > secondary.maxStock)
-                    {
-                        secondaryskill.Reset();
-                    }
+                    secondaryskill.Reset();
                 };
 
             };
@@ -65,8 +60,7 @@ namespace EntityStates.Commando.CommandoWeapon
                 origin = base.transform.position
             }, false);
             Util.PlaySound(CastSmokescreen.jumpSoundString, base.gameObject);
-            this.outer.commonComponents.characterBody.AddTimedBuff(BuffIndex.CloakSpeed, 2f);
-            this.outer.commonComponents.characterBody.AddTimedBuff(BuffIndex.Cloak, 2f);
+            //this.outer.commonComponents.characterBody.AddTimedBuff(BuffIndex.Cloak, 2f);
             base.OnEnter();
         }
         public override void FixedUpdate()
@@ -76,6 +70,7 @@ namespace EntityStates.Commando.CommandoWeapon
         public override void OnExit()
         {
             base.OnExit();
+            this.outer.commonComponents.characterBody.AddTimedBuff(BuffIndex.CloakSpeed, 2f);
         }
         public override InterruptPriority GetMinimumInterruptPriority()
         {
