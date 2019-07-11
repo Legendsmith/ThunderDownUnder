@@ -61,6 +61,10 @@ namespace EntityStates.Mage.Weapon
         public GameObject lightningHitEffect = Resources.Load<GameObject>("prefabs/effects/omnieffect/omniimpactvfxlightning");
         public GameObject fireHitEffect = Resources.Load<GameObject>("prefabs/effects/omnieffect/omniexplosionvfxquick");
         public GameObject iceHitEffect = Resources.Load<GameObject>("prefabs/effects/impacteffects/frozenimpacteffect");
+        public GameObject lightningMuzzle = Resources.Load<GameObject>("prefabs/effects/muzzleflashes/muzzleflashmagelightning");
+        public GameObject iceMuzzle = Resources.Load<GameObject>("prefabs/effects/muzzleflashes/muzzleflashmageice");
+        public GameObject fireMuzzle = Resources.Load<GameObject>("prefabs/effects/muzzleflashes/muzzleflashmagefire");
+
         private float fireStopwatch;
         private float startDuration;
         private float stopwatch;
@@ -77,6 +81,7 @@ namespace EntityStates.Mage.Weapon
             aimRay = base.GetAimRay();
             duration = baseduration * this.attackSpeedStat;
             base.characterBody.SetAimTimer(duration);
+            element = MageElement.Lightning;
             //MageLastElementTracker component = base.GetComponent<MageLastElementTracker>();
             //if (component) {
             //    element = base.GetComponent<MageLastElementTracker>().mageElement;
@@ -86,9 +91,25 @@ namespace EntityStates.Mage.Weapon
             
             
         }
-        public GameObject GetElementalEffect()
+        public GameObject GetElementalEffect(string desiredFX)
         {
-            return lightningEffect;
+            GameObject returnEffect;
+            switch (desiredFX)
+            {
+                case "muzzle":
+                    returnEffect = lightningMuzzle;
+                    break;
+                case "beam":
+                    returnEffect = lightningEffect;
+                    break;
+                case "hit":
+                    returnEffect = lightningHitEffect;
+                    break;
+                default:
+                    returnEffect = lightningEffect;
+                    break;
+            }
+            return returnEffect;
         }
         public override void FixedUpdate()
         {
@@ -123,6 +144,8 @@ namespace EntityStates.Mage.Weapon
             if (base.isAuthority)
             {
                 //TODO: SOUND
+                //TODO: change the effect to an actual beam rather than a series of tracers.
+                EffectManager.instance.SimpleMuzzleFlash(GetElementalEffect("muzzle"), base.gameObject, muzzleString, false);
                 new BulletAttack
                 {
                     owner = base.gameObject,
@@ -133,9 +156,9 @@ namespace EntityStates.Mage.Weapon
                     maxSpread = base.characterBody.spreadBloomAngle,
                     damage = damagemultiplier * base.damageStat / fireFrequency,
                     force = 20f,
-                    tracerEffectPrefab = GetElementalEffect(),
+                    tracerEffectPrefab = GetElementalEffect("beam"),
                     muzzleName = muzzleString,
-                    hitEffectPrefab = lightningHitEffect,
+                    hitEffectPrefab = GetElementalEffect("hit"),
                     isCrit = Util.CheckRoll(this.critStat, base.characterBody.master),
                     radius = 0.5f,
                     smartCollision = false
