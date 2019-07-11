@@ -155,13 +155,15 @@ namespace EntityStates.Mage.Weapon
                     minSpread = 0f,
                     maxSpread = base.characterBody.spreadBloomAngle,
                     damage = damagemultiplier * base.damageStat / fireFrequency,
+                    damageType = DamageType.BypassArmor,
                     force = 20f,
                     tracerEffectPrefab = GetElementalEffect("beam"),
                     muzzleName = muzzleString,
                     hitEffectPrefab = GetElementalEffect("hit"),
                     isCrit = Util.CheckRoll(this.critStat, base.characterBody.master),
                     radius = 0.5f,
-                    smartCollision = false
+                    smartCollision = false,
+                    damageColorIndex = DamageColorIndex.Default
                 }.Fire();
             }
         }
