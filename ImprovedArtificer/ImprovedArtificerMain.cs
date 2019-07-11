@@ -27,8 +27,8 @@ namespace ThunderDownUnder.ImprovedArtificer
                 special.activationState = (EntityStates.SerializableEntityStateType)box;
                 special.beginSkillCooldownOnSkillEnd = true;
                 special.baseRechargeInterval = 5f;
-                special.canceledFromSprinting = false;
-                special.noSprint = false;
+                special.canceledFromSprinting = true;
+                special.noSprint = true;
                 special.skillNameToken = "Elemental Laser";
                 special.skillDescriptionToken = "After a short delay, create an Elemental beam based upon the last element used.";
                 //fix firing 2 shots with one click when there are 2+ charges
@@ -66,30 +66,48 @@ namespace EntityStates.Mage.Weapon
         public GameObject fireMuzzle = Resources.Load<GameObject>("prefabs/effects/muzzleflashes/muzzleflashmagefire");
 
         private float fireStopwatch;
-        private float startDuration;
         private float stopwatch;
         private Ray aimRay;
-        public float fireFrequency = 120f;
+        public float fireFrequency = 15f;
         private MageElement element;
-        private float baseduration = 4f;
+        private float baseduration = 2f;
         private float duration;
-        private float damagemultiplier = 12f;
+        public float damagemultiplier = 3f;
         private static string muzzleString = "MuzzleBetween";
+        //laser stuff
+        private GameObject laserEffect;
+        private LineRenderer laserLineComponent;
+        private Transform modelTransform;
+        private Transform muzzleTransform;
+        private ChildLocator childLocator;
+        //
+        private float maxDistance = 1000f;
 
         public override void OnEnter()
         {
+            base.OnEnter();
             aimRay = base.GetAimRay();
+            damagemultiplier = 12f;
             duration = baseduration * this.attackSpeedStat;
             base.characterBody.SetAimTimer(duration);
             element = MageElement.Lightning;
-            //MageLastElementTracker component = base.GetComponent<MageLastElementTracker>();
-            //if (component) {
-            //    element = base.GetComponent<MageLastElementTracker>().mageElement;
-            //    Debug.Log(element);
-            //};
-            //Debug.Log("Firing Elemental Beam");
-            
-            
+            //laser setup stuff
+            this.modelTransform = base.GetModelTransform();
+            childLocator = modelTransform.GetComponent<ChildLocator>();
+            this.muzzleTransform = this.childLocator.FindChild(muzzleString);
+            GameObject beamfab = GetElementalEffect("beam");
+            if (beamfab)
+             {
+                 this.laserEffect = UnityEngine.Object.Instantiate<GameObject>(beamfab, transform.position, transform.rotation);
+                 Debug.Log("LASERFX:");
+                 Debug.Log(laserEffect);
+                 this.laserEffect.transform.parent = muzzleTransform;
+                 this.laserLineComponent = this.laserEffect.GetComponentInChildren<LineRenderer>();
+                 Debug.Log("COMPONENT:");
+                 Debug.Log(laserLineComponent);
+            }
+
+
         }
         public GameObject GetElementalEffect(string desiredFX)
         {
@@ -125,14 +143,41 @@ namespace EntityStates.Mage.Weapon
                 FireBullet();
                 this.fireStopwatch -= 1f / fireFrequency;
             }
+            //laser stuff
+            if (laserLineComponent) {
+                float num = maxDistance;
+                Ray aimRay = base.GetAimRay();
+                Vector3 position = this.laserEffect.transform.parent.position;
+                Vector3 point = aimRay.GetPoint(num);
+                RaycastHit raycastHit;
+                if (Physics.Raycast(aimRay, out raycastHit, num, LayerIndex.world.mask | LayerIndex.entityPrecise.mask))
+                {
+                    point = raycastHit.point;
+                }
+                this.laserLineComponent.SetPosition(0, position);
+                this.laserLineComponent.SetPosition(1, point);
+            }
+            else
+            {
+                Debug.Log("Laserline component doesn't exist");
+            }
 
+            ////////
             if (stopwatch > duration)
             {
                 base.outer.SetNextStateToMain();
             }
         }
+        public override void Update()
+        {
+            base.Update();
+        }
         public override void OnExit()
         {
+            if (this.laserEffect)
+            {
+                EntityState.Destroy(this.laserEffect);
+            }
             base.OnExit();
         }
         public override InterruptPriority GetMinimumInterruptPriority()
@@ -146,6 +191,7 @@ namespace EntityStates.Mage.Weapon
                 //TODO: SOUND
                 //TODO: change the effect to an actual beam rather than a series of tracers.
                 EffectManager.instance.SimpleMuzzleFlash(GetElementalEffect("muzzle"), base.gameObject, muzzleString, false);
+                
                 new BulletAttack
                 {
                     owner = base.gameObject,
@@ -155,15 +201,16 @@ namespace EntityStates.Mage.Weapon
                     minSpread = 0f,
                     maxSpread = base.characterBody.spreadBloomAngle,
                     damage = damagemultiplier * base.damageStat / fireFrequency,
-                    damageType = DamageType.BypassArmor,
+                    damageType = DamageType.Generic,
                     force = 20f,
-                    tracerEffectPrefab = GetElementalEffect("beam"),
                     muzzleName = muzzleString,
                     hitEffectPrefab = GetElementalEffect("hit"),
                     isCrit = Util.CheckRoll(this.critStat, base.characterBody.master),
                     radius = 0.5f,
                     smartCollision = false,
-                    damageColorIndex = DamageColorIndex.Default
+                    damageColorIndex = DamageColorIndex.Default,
+                    maxDistance=maxDistance
+
                 }.Fire();
             }
         }
