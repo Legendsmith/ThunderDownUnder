@@ -17,7 +17,7 @@ namespace ThunderDownUnder.ImprovedArtificer
             Chat.AddMessage("Loaded ImprovedArtificer!");
             SurvivorAPI.SurvivorCatalogReady += delegate (object s, EventArgs e)
             {
-                //get commando body
+                //get  body
                 GameObject gameObject = BodyCatalog.FindBodyPrefab("MageBody");
                 GenericSkill special = gameObject.GetComponent<SkillLocator>().special;
                 special.activationState = new EntityStates.SerializableEntityStateType(typeof(EntityStates.Mage.Weapon.MageSpecial));
@@ -26,11 +26,25 @@ namespace ThunderDownUnder.ImprovedArtificer
                 field?.SetValue(box, typeof(EntityStates.Mage.Weapon.MageSpecial)?.AssemblyQualifiedName);
                 special.activationState = (EntityStates.SerializableEntityStateType)box;
                 special.beginSkillCooldownOnSkillEnd = true;
-                special.baseRechargeInterval = 10f;
+                special.baseRechargeInterval = 5f;
                 special.canceledFromSprinting = false;
                 special.noSprint = false;
-                special.skillNameToken = "Detonation";
-                special.skillDescriptionToken = "Leaps up in the air and aims an instant explosion. Press R again to Detonate on your target.";
+                special.skillNameToken = "Elemental Laser";
+                special.skillDescriptionToken = "After a short delay, create an Elemental beam based upon the last element used.";
+                //fix firing 2 shots with one click when there are 2+ charges
+                GenericSkill secondary = gameObject.GetComponent<SkillLocator>().secondary;
+                secondary.mustKeyPress = true;
+                //elementtracking
+                On.EntityStates.Mage.Weapon.FireBolt.OnEnter += (orig, self) =>
+                {
+                    orig(self);
+                    MageLastElementTracker component = self.outer.commonComponents.characterBody.GetComponent<MageLastElementTracker>();
+                    if (component)
+                    {
+                        component.ApplyElement(MageElement.Fire);
+                        Debug.Log("Last element is fire");
+                    }
+                };
             };
         }
     }
@@ -40,6 +54,96 @@ namespace ThunderDownUnder.ImprovedArtificer
 namespace EntityStates.Mage.Weapon
 {
     public class MageSpecial : BaseState
+    {
+        public GameObject fireEffect = Resources.Load<GameObject>("prefabs/effects/tracers/tracersmokeline/tracermagefirelaser");
+        public GameObject iceEffect = Resources.Load<GameObject>("prefabs/effects/tracers/tracersmokeline/tracermageicelaser");
+        public GameObject lightningEffect = Resources.Load<GameObject>("prefabs/effects/tracers/tracersmokeline/tracermagelightninglaser");
+        public GameObject lightningHitEffect = Resources.Load<GameObject>("prefabs/effects/omnieffect/omniimpactvfxlightning");
+        public GameObject fireHitEffect = Resources.Load<GameObject>("prefabs/effects/omnieffect/omniexplosionvfxquick");
+        public GameObject iceHitEffect = Resources.Load<GameObject>("prefabs/effects/impacteffects/frozenimpacteffect");
+        private float fireStopwatch;
+        private float startDuration;
+        private float stopwatch;
+        private Ray aimRay;
+        public float fireFrequency = 120f;
+        private MageElement element;
+        private float baseduration = 4f;
+        private float duration;
+        private float damagemultiplier = 12f;
+        private static string muzzleString = "MuzzleBetween";
+
+        public override void OnEnter()
+        {
+            aimRay = base.GetAimRay();
+            duration = baseduration * this.attackSpeedStat;
+            base.characterBody.SetAimTimer(duration);
+            //MageLastElementTracker component = base.GetComponent<MageLastElementTracker>();
+            //if (component) {
+            //    element = base.GetComponent<MageLastElementTracker>().mageElement;
+            //    Debug.Log(element);
+            //};
+            //Debug.Log("Firing Elemental Beam");
+            
+            
+        }
+        public GameObject GetElementalEffect()
+        {
+            return lightningEffect;
+        }
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
+            //time stuff
+            stopwatch += Time.fixedDeltaTime;
+            this.fireStopwatch += Time.fixedDeltaTime;
+            base.PlayAnimation("Gesture, Additive", "HoldGauntletsUp", "FireGauntlet.playbackRate", this.duration);
+            aimRay = base.GetAimRay();
+
+            if (fireStopwatch > 1f / fireFrequency)
+            {
+                FireBullet();
+                this.fireStopwatch -= 1f / fireFrequency;
+            }
+
+            if (stopwatch > duration)
+            {
+                base.outer.SetNextStateToMain();
+            }
+        }
+        public override void OnExit()
+        {
+            base.OnExit();
+        }
+        public override InterruptPriority GetMinimumInterruptPriority()
+        {
+            return InterruptPriority.Skill;
+        }
+        private void FireBullet()
+        {
+            if (base.isAuthority)
+            {
+                //TODO: SOUND
+                new BulletAttack
+                {
+                    owner = base.gameObject,
+                    weapon = base.gameObject,
+                    origin = aimRay.origin,
+                    aimVector = aimRay.direction,
+                    minSpread = 0f,
+                    maxSpread = base.characterBody.spreadBloomAngle,
+                    damage = damagemultiplier * base.damageStat / fireFrequency,
+                    force = 20f,
+                    tracerEffectPrefab = GetElementalEffect(),
+                    muzzleName = muzzleString,
+                    hitEffectPrefab = lightningHitEffect,
+                    isCrit = Util.CheckRoll(this.critStat, base.characterBody.master),
+                    radius = 0.5f,
+                    smartCollision = false
+                }.Fire();
+            }
+        }
+    }
+    public class PrepDetonate : BaseState
     {
         public Vector3 idealHeight;
         public float prepDuration;
@@ -55,8 +159,8 @@ namespace EntityStates.Mage.Weapon
             base.OnEnter();
             //TODO: insert sound
             this.prepDuration = this.baseprepduration / this.attackSpeedStat;
-            base.PlayAnimation("Gesture, Additive", "FireWall");
-            startPosition=base.transform.position;
+            
+            startPosition =base.transform.position;
             if (base.characterMotor)
             {
                 base.characterMotor.velocity = Vector3.zero;
