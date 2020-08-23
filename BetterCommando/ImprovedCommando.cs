@@ -7,8 +7,9 @@ using UnityEngine;
 using RoR2.Projectile;
 namespace ThunderDownUnder.BetterCommando
 {
-    [BepInPlugin("com.ThunderDownUnder.ImprovedCommando", "ImprovedCommando", "1.0.1")]
-    public class BetterCommandoLoader :BaseUnityPlugin
+    [BepInDependency("com.bepis.r2api")]
+    [BepInPlugin("com.Legendsmith.ImprovedCommando","2.0.0")]
+    public class BetterCommandoLoader : BaseUnityPlugin
     {
         public void Awake()
         {
@@ -32,7 +33,8 @@ namespace ThunderDownUnder.BetterCommando
                 //load the FMJ
                 GameObject fmjprefab = Resources.Load<GameObject>("prefabs/projectiles/fmj");
                 ProjectileSimple fmjprojectilesimple = fmjprefab.GetComponentInChildren<ProjectileSimple>();
-                fmjprojectilesimple.velocity = 180f;
+                fmjprojectilesimple.velocity = 200f;
+                /*
                 //load secondary
                 GenericSkill secondary = gameObject.GetComponent<SkillLocator>().secondary;
                 secondary.baseMaxStock = 2;
@@ -43,7 +45,7 @@ namespace ThunderDownUnder.BetterCommando
                     orig(self);
                     GenericSkill secondaryskill = self.outer.commonComponents.characterBody.GetComponent<SkillLocator>().secondary;
                     secondaryskill.Reset();
-                };
+                };*/
 
             };
         }
@@ -51,30 +53,8 @@ namespace ThunderDownUnder.BetterCommando
 }
 namespace EntityStates.Commando.CommandoWeapon
 {
-    class Dodgestateimproved : DodgeState
+    class FireFMJImproved : FireFMJ
     {
-        public override void OnEnter()
-        {
-            EffectManager.instance.SpawnEffect(CastSmokescreenNoDelay.smokescreenEffectPrefab, new EffectData
-            {
-                origin = base.transform.position
-            }, false);
-            Util.PlaySound(CastSmokescreen.jumpSoundString, base.gameObject);
-            //this.outer.commonComponents.characterBody.AddTimedBuff(BuffIndex.Cloak, 2f);
-            base.OnEnter();
-        }
-        public override void FixedUpdate()
-        {
-            base.FixedUpdate();
-        }
-        public override void OnExit()
-        {
-            base.OnExit();
-            this.outer.commonComponents.characterBody.AddTimedBuff(BuffIndex.CloakSpeed, 2f);
-        }
-        public override InterruptPriority GetMinimumInterruptPriority()
-        {
-            return InterruptPriority.Skill;
-        }
+        
     }
-}
+} 

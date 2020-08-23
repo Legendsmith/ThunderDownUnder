@@ -1,0 +1,11 @@
+{
+  strings:{
+  "SHRINE_BOSS_NAME": "Shrine of the Mountain",
+	"SHRINE_BOSS_CONTEXT": "Pray to Shrine of the Mountain",
+	"SHRINE_BOSS_USE_MESSAGE_2P": "<style=cShrine>Fuck around and find out..</color>",
+	"SHRINE_BOSS_USE_MESSAGE": "<style=cShrine>{0} has invited the challenge of the Mountain..</color>",
+	"SHRINE_BOSS_BEGIN_TRIAL": "<style=cShrine>Let the challenge of the Mountain... begin!</style>",
+	"SHRINE_BOSS_END_TRIAL": "<style=cShrine>Your bravery is rewarded!</style>",
+
+  }
+}

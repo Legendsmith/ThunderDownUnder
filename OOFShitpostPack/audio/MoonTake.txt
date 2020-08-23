@@ -1,0 +1,11 @@
+Event	ID	Name			Wwise Object Path	Notes
+	1047166050	Takemoon_Start			\Default Work Unit\Takemoon_Start	
+	2693398676	Takemoon_Loop			\Default Work Unit\Takemoon_Loop	
+
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	3673881719	Volume_SFX			\Default Work Unit\Volume_SFX	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	294840652	take-moon-loop	C:\Users\the-l\Documents\WwiseProjects\moontake\.cache\Windows\SFX\take-moon-loop_A1793BE9.wem		\Actor-Mixer Hierarchy\Default Work Unit\Master Mixer\SFX Mixer\take-moon-loop		68342
+	814227284	take-moon-start	C:\Users\the-l\Documents\WwiseProjects\moontake\.cache\Windows\SFX\take-moon-start_A1793BE9.wem		\Actor-Mixer Hierarchy\Default Work Unit\Master Mixer\SFX Mixer\take-moon-start		73648
+

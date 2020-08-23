@@ -1,0 +1,12 @@
+﻿{
+	"strings":
+	{
+	"EQUIPMENT_TONIC_NAME" : "Hellfire Tincture",
+	"EQUIPMENT_TONIC_PICKUP" : "I'm sippin lean and I feel like <color=#FF7F7F>I'm Nerevar.</color>",
+	"EQUIPMENT_METEOR_NAME": "Troll Button",
+	"EQUIPMENT_METEOR_PICKUP": "Rain meteors from the sky, <color=#FF7F7F>hurting both enemies and allies.</color>",
+	"EQUIPMENT_BURNNEARBY_NAME" : "White Hot Takes",
+	"EQUIPMENT_BURNNEARBY_PICKUP" : "Burn everything nearby... <color=#FF7F7F>including you and allies.</color>\n",
+	"EQUIPMENT_CRITONUSE_NAME": "Steam VR"
+	}
+}
