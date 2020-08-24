@@ -351,3 +351,7 @@ healthchecksdb
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
+OOFShitpostPack/Dist/OOFShitpostPack/manifest.json
+OOFShitpostPack/Dist/OOFShitpostPack/OOFShitpostPack.dll
+OOFShitpostPack/Dist/OOFShitpostPack/OOFShitpostPack.zip
+OOFShitpostPack/Dist/OOFShitpostPack/manifest.json
