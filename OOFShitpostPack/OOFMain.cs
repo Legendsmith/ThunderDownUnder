@@ -5,7 +5,8 @@ using UnityEngine;
 using R2API;
 using R2API.Utils;
 using RoR2;
-using IL.EntityStates;
+using EntityStates;
+using System.Collections;
 
 namespace OOFShitpostPack
 {
@@ -22,6 +23,7 @@ namespace OOFShitpostPack
             return R2API.SoundAPI.SoundBanks.Add(resourceBytes);
         }
         public UInt32 takemoonbank;
+        public SoundLoopStarter soundloopstarter;
         public void Awake()
         {
             R2API.LanguageAPI.AddPath("OOFShitpostPack/language/CharacterBodies");
@@ -32,17 +34,45 @@ namespace OOFShitpostPack
             R2API.LanguageAPI.AddPath("OOFShitpostPack/language/Interactors");
             //sound
             takemoonbank = LoadSoundBank(Properties.Resources.MoonTake);
-
+            // loop id 2693398676
+            //test
+            On.EntityStates.Commando.CommandoWeapon.FireFMJ.OnEnter += (orig, self) =>
+            {
+                AkSoundEngine.PostEvent(1047166050, self.outer.gameObject);
+                orig(self);
+                soundloopstarter.Init(self.outer.gameObject);
+            };
+            //
             On.EntityStates.BrotherMonster.ThroneSpawnState.OnEnter += (orig, self) =>
             {
+                AkSoundEngine.PostEvent(1047166050, self.outer.gameObject);
                 orig(self);
-                Util.PlaySound("1047166050", self.outer.gameObject);
+                soundloopstarter.Init(self.outer.gameObject);
             };
-            On.EntityStates.Commando.MainState.FixedUpdate += (orig, self) =>
+            On.EntityStates.BrotherMonster.TrueDeathState.OnEnter += (orig, self) =>
             {
+                AkSoundEngine.StopPlayingID(2693398676);
                 orig(self);
-                Util.PlaySound("2693398676", self.outer.gameObject);
+                
             };
+        }
+
+    }
+    public class SoundLoopStarter : MonoBehaviour
+    {
+        GameObject Target;
+        private IEnumerator coroutine;
+        public void Init(GameObject obj)
+        {
+            Target = obj;
+            coroutine = WaitAndPlay();
+            StartCoroutine(coroutine);
+            
+        }
+        private IEnumerator WaitAndPlay()
+        {
+            yield return new WaitForSeconds(5);
+            AkSoundEngine.PostEvent(2693398676, Target);
         }
     }
 }

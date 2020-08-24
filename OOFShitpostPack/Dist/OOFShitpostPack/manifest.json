@@ -1,0 +1,22 @@
+{
+    "ManifestVersion": 2,
+    "AuthorName": "Legendsmith",
+    "Name": "Legendsmith-OOFShitpostPack",
+    "DisplayName": "OOFShitpostPack",
+    "Version": "0.1.5",
+    "Licence": "",
+    "WebsiteURL": "https://github.com/Legendsmith/ThunderDownUnder",
+    "Description": "Just Jokes",
+    "GameVersion": "N/A",
+    "Dependencies": [],
+    "OptionalDependencies": [],
+    "Incompatibilities": [],
+    "NetworkMode": "both",
+    "PackageType": "mod",
+    "InstallMode": "managed",
+    "Loaders": [
+        "bepinex",
+        "R2API"
+    ],
+    "ExtraData": {}
+}
