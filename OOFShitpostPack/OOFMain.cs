@@ -11,7 +11,7 @@ using System.Collections;
 namespace OOFShitpostPack
 {
     [BepInDependency("com.bepis.r2api")]
-    [BepInPlugin("com.Legendsmith.OOFShitpostPack", "Oof Shitpost Pack", "0.1.5")]
+    [BepInPlugin("com.Legendsmith.OOFShitpostPack", "Oof Shitpost Pack", "0.1.7")]
     [R2APISubmoduleDependency(nameof(LanguageAPI))]
     [R2APISubmoduleDependency(nameof(SoundAPI))]
     public class OOFShitpostPack : BaseUnityPlugin
@@ -23,7 +23,9 @@ namespace OOFShitpostPack
             return R2API.SoundAPI.SoundBanks.Add(resourceBytes);
         }
         public UInt32 takemoonbank;
-        public SoundLoopStarter soundloopstarter;
+        private GameObject Target;
+        private IEnumerator coroutine;
+        private Boolean Dead = false;
         public void Awake()
         {
             R2API.LanguageAPI.AddPath("OOFShitpostPack/language/CharacterBodies");
@@ -35,44 +37,34 @@ namespace OOFShitpostPack
             //sound
             takemoonbank = LoadSoundBank(Properties.Resources.MoonTake);
             // loop id 2693398676
-            //test
-            On.EntityStates.Commando.CommandoWeapon.FireFMJ.OnEnter += (orig, self) =>
-            {
-                AkSoundEngine.PostEvent(1047166050, self.outer.gameObject);
-                orig(self);
-                soundloopstarter.Init(self.outer.gameObject);
-            };
-            //
             On.EntityStates.BrotherMonster.ThroneSpawnState.OnEnter += (orig, self) =>
             {
-                AkSoundEngine.PostEvent(1047166050, self.outer.gameObject);
+                AkSoundEngine.PostEvent(2693398676, self.outer.gameObject);
                 orig(self);
-                soundloopstarter.Init(self.outer.gameObject);
+                Target = self.outer.gameObject;
+                coroutine = WaitAndPlay(5.51f);
+                StartCoroutine(coroutine);
             };
             On.EntityStates.BrotherMonster.TrueDeathState.OnEnter += (orig, self) =>
             {
                 AkSoundEngine.StopPlayingID(2693398676);
+                Dead = true;
                 orig(self);
                 
             };
         }
-
-    }
-    public class SoundLoopStarter : MonoBehaviour
-    {
-        GameObject Target;
-        private IEnumerator coroutine;
-        public void Init(GameObject obj)
+        private IEnumerator WaitAndPlay(float Time)
         {
-            Target = obj;
-            coroutine = WaitAndPlay();
-            StartCoroutine(coroutine);
-            
-        }
-        private IEnumerator WaitAndPlay()
-        {
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(Time);
             AkSoundEngine.PostEvent(2693398676, Target);
+            if (Dead == false)
+            {
+                coroutine = WaitAndPlay(5.429f);
+                StartCoroutine(coroutine);
+            }
+            
+
         }
+
     }
 }

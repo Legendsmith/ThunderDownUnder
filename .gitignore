@@ -12,6 +12,7 @@
 
 #User defined
 Dependencies/
+*Dist/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
