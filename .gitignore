@@ -12,7 +12,7 @@
 
 #User defined
 Dependencies/
-*Dist/
+Dist/*
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -355,3 +355,6 @@ OOFShitpostPack/Dist/OOFShitpostPack/manifest.json
 OOFShitpostPack/Dist/OOFShitpostPack/OOFShitpostPack.dll
 OOFShitpostPack/Dist/OOFShitpostPack/OOFShitpostPack.zip
 OOFShitpostPack/Dist/OOFShitpostPack/manifest.json
+OOFShitpostPack/Dist/OOFShitpostPack/manifest.json
+OOFShitpostPack/Dist/OOFShitpostPack/OOFShitpostPack.dll
+OOFShitpostPack/Dist/OOFShitpostPack/OOFShitpostPack.zip
